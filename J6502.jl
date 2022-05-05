@@ -39,10 +39,17 @@ function resetCpu(cpu6502::Cpu6502)
 end 
 
 function monitor(cpu)
-    println("PC: $(cpu.pc) SP:$(cpu.sp) A:$(cpu.a) X:$(cpu.x) Y:$(cpu.y) P:$(bitstring(cpu.p))\n")
+    println("PC: $(string(cpu.pc; base=16)) SP:$(string(cpu.sp; base=16)) A:$(string(cpu.a; base=16)) X:$(string(cpu.x; base=16)) Y:$(string(cpu.y; base=16)) P:$(bitstring(cpu.p))\n")
 end
 
-function execute(cpu, memory)
+
+function execute(cpu, memory, cycles)
+    
+    while cycles > 0   
+       data = memory[cpu.pc]
+       cpu.pc += 1
+       cycles -= 1
+    end
     printhex(cpu.pc)
 end
 
@@ -63,9 +70,12 @@ function main()
     @show mymemory[0x0000]
     @show mymemory[0xffff]
     mymemory[0xffff] = 0xca + 0xff
+    mymemory[0xfffc] = 0xea
+    mymemory[0xfffd] = 0xbb
     @show mymemory[0xffff]
     monitor(mycpu)
-    execute(mycpu,mymemory)
+    execute(mycpu,mymemory,2)
+    @show mymemory[mycpu.pc]
     
     
 end
