@@ -1,3 +1,4 @@
+#!/usr/bin/env julia
 # 6502 Emulator in Julia
 # Michael Doornbos (mike@imapenguin.com)
 
